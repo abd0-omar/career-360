@@ -36,7 +36,7 @@ void register()
 
     Console.Write("Enter a password: ");
     var pass = Console.ReadLine();
-    if (!string.IsNullOrEmpty(pass) && pass.Trim().Length > 0)
+    if (!string.IsNullOrEmpty(pass))
     {
         registeredUsername.Add(user);
         registeredPassword.Add(pass);

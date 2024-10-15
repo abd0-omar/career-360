@@ -48,3 +48,4 @@ while (true)
 // this lang is shit holy,
 // anything after rust just feels .. terrible
 // and rust is already terrible
+// Rust is no "exception".

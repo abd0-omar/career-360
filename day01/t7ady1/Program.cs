@@ -1,6 +1,5 @@
-﻿// I'm still not profecient in error handling in c#
-// this is my first app to write btw so I don't know the best practices yet
-// but the current error handling hurts my eyes, hopefully only for now, or maybe I'll get used to it and that's worse
+﻿// but the current error handling hurts my eyes, hopefully only for now, or maybe I'll get used to it and that's worse
+// maybe this will help a little https://github.com/karanraj-tech/result-pattern
 var registeredUsername = new List<string>();
 var registeredPassword = new List<string>();
 

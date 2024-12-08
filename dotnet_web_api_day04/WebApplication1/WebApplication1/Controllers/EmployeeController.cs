@@ -8,11 +8,11 @@ namespace WebApplication1.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController(EmployeeRepistory empReps) : Controller
+public class EmployeeController(GenericRepository<Employee> empRepository) : Controller
 {
-    private readonly EmployeeRepistory _empReps = empReps;
+private readonly GenericRepository<Employee> _empRepository = empRepository;
 
-    [HttpPost]
+[HttpPost]
     public ActionResult add_emp_with_photo(AddEmployeeDTO employeeDto)
     {
         if (!ModelState.IsValid)
@@ -28,7 +28,7 @@ public class EmployeeController(EmployeeRepistory empReps) : Controller
         employeeDto.file.CopyTo(fs);
         
         // reps
-        _empReps.AddEmployee(employeeDto, filePath);
+        _empRepository.AddEmployee(employeeDto, filePath);
         return Ok();
     }
 
@@ -36,7 +36,7 @@ public class EmployeeController(EmployeeRepistory empReps) : Controller
     public ActionResult<ShowEmployeeDTO> GetAll()
     {
         // reps
-        var employees = _empReps.GetAll();
+        var employees = _empRepository.GetAll();
         var employeesDto = new List<ShowEmployeeDTO>();
         foreach (var emp in employees)
         {
@@ -59,7 +59,7 @@ public class EmployeeController(EmployeeRepistory empReps) : Controller
     public ActionResult<ShowEmployeeDTO> GetById([FromRoute]int id)
     {
         // reps
-        var employee = _empReps.GetById(id);
+        var employee = _empRepository.GetById(id);
         if (employee == null)
         {
             return NotFound();

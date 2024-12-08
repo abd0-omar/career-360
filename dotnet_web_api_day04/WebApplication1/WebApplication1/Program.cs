@@ -20,7 +20,7 @@ public class Program
             .UseSqlServer(builder.Configuration.GetConnectionString("kompany_con")));
         
         // reps
-        builder.Services.AddScoped<EmployeeRepistory>();
+        builder.Services.AddScoped<GenericRepository<Employee>>();
 
         var app = builder.Build();
 

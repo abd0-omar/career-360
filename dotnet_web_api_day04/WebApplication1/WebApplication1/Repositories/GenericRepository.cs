@@ -3,10 +3,11 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Repositories;
 
-public class EmployeeRepistory(KompanyContext db)
+public class GenericRepository<TEntity>(KompanyContext db) where TEntity: class
 {
-    private KompanyContext _db = db;
+    private readonly KompanyContext _db = db;
     
+    // this function has to be non generic
     public void AddEmployee(AddEmployeeDTO employeeDto, string filePath)
     {
         var employee = new Employee()
@@ -24,8 +25,14 @@ public class EmployeeRepistory(KompanyContext db)
         _db.Add(employee);
         _db.SaveChanges();
     }
+    
+    // public void AddEmployee(TEntity entity, string filePath)
+    // {
+    //     _db.Set<TEntity>().Add(entity);
+    //     _db.SaveChanges();
+    // }
 
-    public List<Employee> GetAll() => _db.Employees.ToList();
+    public List<TEntity> GetAll() => _db.Set<TEntity>().ToList();
 
-    public Employee? GetById(int id) => _db.Employees.SingleOrDefault(emp => emp.Id == id);
+    public TEntity? GetById(int id) => _db.Set<TEntity>().Find(id);
 }

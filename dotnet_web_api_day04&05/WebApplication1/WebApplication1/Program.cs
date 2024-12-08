@@ -20,8 +20,10 @@ public class Program
             .UseSqlServer(builder.Configuration.GetConnectionString("kompany_con")));
         
         // reps
-        builder.Services.AddScoped<GenericRepository<Employee>>();
-
+        builder.Services.AddScoped<UnitOfWork>();
+        // builder.Services.AddScoped<GenericRepository<Employee>>();
+        builder.Services.AddScoped<EmployeeRepository>();
+    
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

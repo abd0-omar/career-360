@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.JavaScript;
 
 namespace WebApplication1.DTO;
 
-public class ShowEmployeeDTO
+public class BasicEmployeeDTO
 {
      public string name { get; set; }
      public string username { get; set; }

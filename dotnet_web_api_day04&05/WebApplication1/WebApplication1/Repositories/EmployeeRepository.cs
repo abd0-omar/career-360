@@ -1,13 +1,12 @@
-﻿using WebApplication1.DTO;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.DTO;
 using WebApplication1.Models;
 
 namespace WebApplication1.Repositories;
 
-public class GenericRepository<TEntity>(KompanyContext db) where TEntity: class
+public class EmployeeRepository(KompanyContext db)
 {
-    private readonly KompanyContext _db = db;
-    
-    // this function has to be non generic
+    // this class exist because emp add has a specific use case
     public void AddEmployee(AddEmployeeDTO employeeDto, string filePath)
     {
         var employee = new Employee()
@@ -22,17 +21,7 @@ public class GenericRepository<TEntity>(KompanyContext db) where TEntity: class
         };
         // create image file path
         // add file path to db
-        _db.Add(employee);
-        _db.SaveChanges();
+        db.Add(employee);
+        db.SaveChanges();
     }
-    
-    // public void AddEmployee(TEntity entity, string filePath)
-    // {
-    //     _db.Set<TEntity>().Add(entity);
-    //     _db.SaveChanges();
-    // }
-
-    public List<TEntity> GetAll() => _db.Set<TEntity>().ToList();
-
-    public TEntity? GetById(int id) => _db.Set<TEntity>().Find(id);
 }

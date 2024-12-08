@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
+using WebApplication1.Repositories;
 
 namespace WebApplication1;
 
@@ -17,6 +18,9 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddDbContext<KompanyContext>(op => op.UseLazyLoadingProxies()
             .UseSqlServer(builder.Configuration.GetConnectionString("kompany_con")));
+        
+        // reps
+        builder.Services.AddScoped<EmployeeRepistory>();
 
         var app = builder.Build();
 

@@ -1,48 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using WebApplication1.DTO;
 using WebApplication1.Models;
+using WebApplication1.Repositories;
 
 namespace WebApplication1.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController(KompanyContext db) : Controller
+public class EmployeeController(EmployeeRepistory empReps) : Controller
 {
-    private readonly KompanyContext _db = db;
+    private readonly EmployeeRepistory _empReps = empReps;
 
     [HttpPost]
     public ActionResult add_emp_with_photo(AddEmployeeDTO employeeDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         if (employeeDto.file.Length == 0)
         {
             return BadRequest();
         }
-
         var filePath = $"{Directory.GetCurrentDirectory()}/{employeeDto.file.FileName}";
         FileStream fs = new FileStream(filePath, FileMode.Create);
         employeeDto.file.CopyTo(fs);
         
-        var employee = new Employee()
-        {
-            username = employeeDto.username,
-            photo = filePath,
-            date = employeeDto.date,
-            email = employeeDto.email,
-            password = employeeDto.password,
-            salary = employeeDto.salary,
-            name = employeeDto.name,
-        };
-        // create image file path
-        // add file path to db
-        _db.Add(employee);
-        _db.SaveChanges();
+        // reps
+        _empReps.AddEmployee(employeeDto, filePath);
         return Ok();
     }
 
     [HttpGet]
     public ActionResult<ShowEmployeeDTO> GetAll()
     {
-        var employees = _db.Employees.ToList();
+        // reps
+        var employees = _empReps.GetAll();
         var employeesDto = new List<ShowEmployeeDTO>();
         foreach (var emp in employees)
         {
@@ -64,7 +58,8 @@ public class EmployeeController(KompanyContext db) : Controller
     [HttpGet("{id:int}")]
     public ActionResult<ShowEmployeeDTO> GetById([FromRoute]int id)
     {
-        var employee = _db.Employees.SingleOrDefault(e => e.Id == id);
+        // reps
+        var employee = _empReps.GetById(id);
         if (employee == null)
         {
             return NotFound();
